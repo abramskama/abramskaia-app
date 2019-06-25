@@ -1,5 +1,6 @@
 <?php
 
+use App\OfferCount;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -20,6 +21,8 @@ class CreateOfferCountsTable extends Migration
             $table->bigInteger('count', false, true);
             $table->timestamps();
         });
+
+        OfferCount::UpdateOfferCount();
     }
 
     /**
