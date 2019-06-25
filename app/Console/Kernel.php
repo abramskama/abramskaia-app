@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            OfferCount::updateOfferCount();
+            $offerCount = new OfferCount();
+            $offerCount->updateOfferCount();
         })->everyMinute();
     }
 

@@ -7,20 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     protected $fillable = ['region_id', 'name'];
+    private $client;
 
-    public static function loadCities()
+    private function loadClient()
     {
+        $this->client = new N1ApiClient();
+    }
 
-        $externalApiRequest = new ExternalApiRequest();
-        $regionIDList = $externalApiRequest->getRegionIDList();
+    public function loadCities()
+    {
+        $this->loadClient();
+        $regionIDList =  $this->client->getRegionIDList();
 
-        foreach($regionIDList as $regionID)
-        {
-            if($name = $externalApiRequest->getCityName($regionID))
-            {
+        foreach($regionIDList as $regionID) {
+
+            if($name =  $this->client->getCityName($regionID)) {
                 $city = new City(['region_id' => $regionID, 'name' => $name]);
                 $city->save();
             }
+
         }
     }
 

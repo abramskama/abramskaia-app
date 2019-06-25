@@ -22,7 +22,8 @@ class CreateOfferCountsTable extends Migration
             $table->timestamps();
         });
 
-        OfferCount::UpdateOfferCount();
+        $offerCount = new OfferCount();
+        $offerCount->updateOfferCount();
     }
 
     /**

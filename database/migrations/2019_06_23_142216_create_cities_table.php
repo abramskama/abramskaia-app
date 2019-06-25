@@ -22,7 +22,8 @@ class CreateCitiesTable extends Migration
             $table->timestamps();
         });
 
-        City::loadCities();
+        $city = new City();
+        $city->loadCities();
     }
 
     /**

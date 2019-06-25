@@ -8,20 +8,23 @@ use App\City;
 class OfferCount extends Model
 {
     protected $fillable = ['count', 'city_id'];
+    private $client;
 
-    public static function updateOfferCount()
+    private function loadClient()
     {
-        $externalApiRequest = new ExternalApiRequest();
-        $regionIDList = $externalApiRequest->getRegionIDList();
+        $this->client = new N1ApiClient();
+    }
 
-        foreach($regionIDList as $regionID)
-        {
+    public function updateOfferCount()
+    {
+        $this->loadClient();
+        $regionIDList = $this->client->getRegionIDList();
+
+        foreach($regionIDList as $regionID) {
             $city = City::where('region_id', $regionID)->first();
-            if($city)
-            {
+            if($city) {
                 $cityID = $city->getAttribute('id');
-                if ($count = $externalApiRequest->getCityOfferCount($regionID))
-                {
+                if ($count = $this->client->getCityOfferCount($regionID)) {
                     $offerCount = new OfferCount(['city_id' => $cityID, 'count' => $count]);
                     $offerCount->save();
                 }
